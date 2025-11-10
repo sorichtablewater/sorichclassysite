@@ -1,13 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require('path');
 const app = express();
-const port = 3000;
+
+// Use Render's dynamic port or default 3000
+const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(bodyParser.json());
-app.use(express.static('../public')); // serve your HTML
+app.use(express.static(path.join(__dirname, 'public'))); // serve frontend
 
-// Dummy storage (replace with database if needed)
+// Dummy storage
 let salesData = [];
 let debtData = [];
 let expenseData = [];
@@ -32,4 +35,4 @@ app.post('/api/debts', (req, res) => { debtData.push(req.body); res.json({ succe
 app.get('/api/expenses', (req, res) => res.json(expenseData));
 app.post('/api/expenses', (req, res) => { expenseData.push(req.body); res.json({ success: true }); });
 
-app.listen(port, () => console.log(`Backend running at http://localhost:${port}`));
+app.listen(port, () => console.log(`Backend running on port ${port}`));
